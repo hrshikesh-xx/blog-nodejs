@@ -1,24 +1,30 @@
 var express = require('express');
+var http = require('http');
+var path = require('path');
 var blog = require('./blog');
 
 var app = express();
 
 app.configure(function() {
+	app.set('port', process.env.PORT || 3000);
+	app.set('views', __dirname + '/views');
+	app.set('view engine', 'jade');
 	app.use(express.logger('dev'));
 	app.use(express.bodyParser());
+	app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.get('/', function(req, res) {
-	res.send('Hari Bol !!');
-});
+app.get('/', blog.findAll);
 
 app.get('/blog', blog.findAll);
+app.get('/blog/new', blog.newBlog);
+app.post('/update/:id', blog.update);
 app.get('/blog/:id', blog.findById);
 app.post('/blog/new', blog.addBlog);
-app.put('/blog/:id', blog.updateBlog);
-app.delete('/blog/:id', blog.deleteBlog);
-app.post('/blog/addComment/:id', blog.addCommentToBlog);
+app.post('/updateBlog', blog.updateBlog);
+app.post('/deleteBlog', blog.deleteBlog);
+app.post('/blog/addComment', blog.addCommentToBlog);
 
-app.listen(3000, '127.0.0.1', function() {
-	console.log('Listening on port 3000...');
+http.createServer(app).listen(app.get('port'), function() {
+	console.log('Listening on port: ' + app.get('port'));
 });

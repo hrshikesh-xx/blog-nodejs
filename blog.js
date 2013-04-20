@@ -10,6 +10,7 @@ db.open(function(error) {
 
 	db.collection('blogs', {strict: true}, function(error, collection) {
 		blogCollection = collection;
+		insertDB();
 		if(error) {
 			console.log('The blog collection doesnt exist, creating it with sample data...');
 			insertDB()
@@ -33,7 +34,7 @@ var insertDB = function() {
 var findAll = function(req, res) {
 	console.log('Retrieving all blogs:');
 	blogCollection.find().toArray(function(error, items) {
-		res.send(items);
+		res.render('index', {title: 'Blog', articles:items});
 	});
 };
 
@@ -41,8 +42,12 @@ var findById = function(req, res) {
 	var id = req.params.id;
 	console.log('Retrieving blog with id: ' + id);
 	blogCollection.findOne({'_id': new ObjectID(id)}, function(error, item) {
-		res.send(item);
+		res.render('item', {title: item.title, item: item});
 	});
+};
+
+var newBlog = function(req, res) {
+	res.render('new_blog', {title: 'New Blog'});
 };
 
 var addBlog = function(req, res) {
@@ -65,7 +70,7 @@ var addBlog = function(req, res) {
 };
 
 var updateBlog = function(req, res) {
-	var id = req.params.id;
+	var id = req.body._id;
 	var comment;
 	blogCollection.findOne({'_id': new ObjectID(id)}, function(err, item) {
 		if(req.body.title === undefined)
@@ -93,8 +98,16 @@ var updateBlog = function(req, res) {
 	});	
 };
 
-var deleteBlog = function(req, res) {
+var update = function(req, res) {
 	var id = req.params.id;
+	console.log('updating blog with id: ' + id);
+	blogCollection.findOne({'_id': new ObjectID(id)}, function(error, item) {
+		res.render('update_blog', {title: item.title, item: item});
+	});
+};
+
+var deleteBlog = function(req, res) {
+	var id = req.body._id;
 	blogCollection.remove({'_id': new ObjectID(id)}, {safe:true}, function(err, items) {
 		if(err) {
 			console.log('Error deleting blog with: ' + id + '\n' + 'Error: ' + err);
@@ -106,20 +119,22 @@ var deleteBlog = function(req, res) {
 };
 
 var addCommentToBlog = function(req, res) {
-	var id = req.params.id
+	var id = req.body._id
 	var comment = {
 		reader: req.body.reader,
 		comment: req.body.comment,
 		created_at: new Date()
 	};
 	blogCollection.update({'_id': new ObjectID(id)}, {'$push': {comments: comment}}, function(err, item) {
-		res.redirect('/blog');
+		res.redirect('/blog/' + id);
 	});
 };
 
 module.exports.findAll = findAll;
 module.exports.findById = findById;
+module.exports.newBlog = newBlog;
 module.exports.addBlog = addBlog;
+module.exports.update = update;
 module.exports.updateBlog = updateBlog;
 module.exports.deleteBlog = deleteBlog;
 module.exports.addCommentToBlog = addCommentToBlog;

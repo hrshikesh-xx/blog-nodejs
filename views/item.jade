@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  div(id="wrap")
+    section(id="page")
+      h1 #{item.title}
+      #articles
+        div.created_at
+          span.article_blog Created At:
+          p.article_value #{item.created_at}
+        div.title
+          span.article_blog Title:
+          p.article_value
+            a(href="/blog/" + item._id)
+              | #{item.title}
+        div.body
+          span.article_blog Blog:
+          p.article_value #{item.blog}
+        -var num = 1;
+        -each comment in item.comments
+          div.comments
+            div.reader Reader #{num}: #{comment.reader}
+            div.comment Comment #{num}: #{comment.comment}
+            -num++;
+        div
+            form(class="form", method='post', action='/blog/addComment')
+              input(type='hidden', name='_id', value=item._id)
+              div
+                span Reader :
+                p
+                  input(type='text', name='reader', id='addCommentPerson')
+              div
+                span Comment :
+                p
+                  textarea(name='comment', rows=5, id='addCommentComment')
+              div#editArticleSubmit
+                input(id="submit", type='image', src="/images/submit.png")
+  

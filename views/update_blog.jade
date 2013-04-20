@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  div(id="wrap")
+    section(id="page")
+      h1.update UPDATING BLOG
+      h1 #{item.title}
+      form(class="form", method='post', action='/updateBlog')
+        div
+          div
+            input(type='hidden', name='_id', value=item._id)
+            span Title :
+            p
+              input(id="title", type="text", name="title", value=item.title)
+          div
+            span Body :
+            p
+              input(id="blog", type='text', name="blog", value=item.blog)
+          div
+            span Author :
+            p
+              input(id="author", type="text", name="author", value=item.author)
+          div#editArticleSubmit
+            input(id="submit", type="image", src="/images/submit.png")
