@@ -1,7 +1,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var blog = require('./blog');
+var blog = require('./model');
 
 var app = express();
 
