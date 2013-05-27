@@ -1,0 +1,16 @@
+!!! 5
+html(lang='en')
+  head
+    include ../includes/cssStyles
+  body
+    .container
+      .wrapper
+        include ../includes/header
+        .contain
+          .main-content
+            .main-head
+              block main
+            block content
+        .push
+      block logins
+      include ../includes/jsScripts

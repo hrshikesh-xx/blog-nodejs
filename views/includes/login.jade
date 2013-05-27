@@ -1,0 +1,33 @@
+div(id="myModal", class="modal hide fade smallModal")
+  form(id="signup-form", action="/signup", method="post", class="form-horizontal")
+    div(class="modal-header")
+      a(data-dismiss="modal", class="close")
+      h3 Sign Up Today
+    div(class="modal-body")
+      fieldset
+        div(class="control-group")
+          input(type="text", name="username", placeholder="Username", class="input-xlarge uname")
+          span(id="imagePlaceHolder")
+        div(class="control-group")
+          input(type="text", name="email", placeholder="Email", class="input-xlarge")
+        div(class="control-group")
+          input(type="password", name="password", placeholder="Password", class="input-xlarge")    
+    div(class="modal-footer")
+      a(href="#", data-dismiss="modal", class="btn") Close
+      button(class="btn btn-primary create-button", type="submit") Create Account
+
+div(id="loginModal", class="modal hide fade smallModal")
+  form(id="login-form", action="/login", method="post", class="form-horizontal")
+    div(class="modal-header")
+      a(data-dismiss="modal", class="close")
+      h3 Log In
+    div(class="modal-body")
+      fieldset
+        div(class="control-group")
+          input(type="text", name="username", placeholder="Username", class="input-xlarge uname")
+          span(id="imagePlaceHolder")
+        div(class="control-group")
+          input(type="password", name="password", placeholder="Password", class="input-xlarge")
+    div(class="modal-footer")
+      a(href="#", data-dismiss="modal", class="btn") Close
+      button(class="btn btn-primary create-button", type="submit") Log In

@@ -1,0 +1,31 @@
+extends ../layouts/default
+
+block main
+  h1 Articles
+
+block content
+  each article in articles
+    .article
+      a.title(href="/blog/" + article._id, title=article.title) #{article.title}
+      p=article.blog
+      .author
+        -var date = new Date(article.created_at).toDateString();
+        span #{date}
+        span &nbsp;| Author :&nbsp;
+        a(href="/blog/")=article.author
+        | &nbsp;|&nbsp;
+        if (article.tags)
+          span.tags
+            span Tags :&nbsp;
+            each tag in article.tags.split(',')
+              a.tag(href="/tags/"+tag)
+                i.icon-tags
+                |  #{tag}
+
+block logins
+  include ../includes/login
+  
+//  if (pages > 1)
+  //  .pagination
+    //  ul
+      //  != createPagination(pages, page)
